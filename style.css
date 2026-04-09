@@ -123,7 +123,8 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 40px;
+    /* Increased for premium air */
 }
 
 .accent {
@@ -490,7 +491,8 @@ h2 {
 /* --- Pixel-Perfect Unified Header --- */
 .nav-content {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns for absolute centering */
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 equal columns for absolute centering */
     align-items: center;
     position: relative;
     width: 100%;
@@ -511,14 +513,16 @@ h2 {
     justify-self: center;
     pointer-events: none;
     z-index: 5;
-    padding-bottom: 2px; /* Optical vertical correction */
+    padding-bottom: 2px;
+    /* Optical vertical correction */
 }
 
 .nav-right {
     display: flex;
     align-items: center;
     justify-self: end;
-    gap: 20px;
+    gap: 40px;
+    /* Matched to container padding for symmetry */
     z-index: 10;
 }
 
@@ -529,14 +533,13 @@ h2 {
     gap: 8px;
     background: rgba(0, 210, 255, 0.05);
     border: 1px solid rgba(0, 210, 255, 0.15);
-    padding: 6px 16px 8px;
+    padding: 2px 16px 4px; /* Balanced for 28px height */
     border-radius: 20px;
     white-space: nowrap;
     opacity: 1 !important;
     pointer-events: auto;
-    min-height: 32px;
+    min-height: 28px; /* Unified height */
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    /* Smooth transitions for width/text changes */
     will-change: width, transform, opacity;
 }
 
@@ -544,9 +547,11 @@ h2 {
     display: block !important;
     width: 8px !important;
     height: 8px !important;
-    aspect-ratio: 1 / 1 !important; /* Force equal dimensions */
+    aspect-ratio: 1 / 1 !important;
+    /* Force equal dimensions */
     background: #00ff88 !important;
-    border-radius: 50% !important; /* Force absolute circle */
+    border-radius: 50% !important;
+    /* Force absolute circle */
     box-shadow: 0 0 10px #00ff88, 0 0 20px rgba(0, 255, 136, 0.3);
     animation: statusPulse 1.5s infinite;
     flex-shrink: 0;
@@ -607,23 +612,21 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 45px;
-    height: 45px;
+    width: 28px; /* Matched to burger width */
+    height: 28px; /* Matched to burger height */
     text-decoration: none;
-    margin-right: 10px;
+    margin-right: 0;
 }
 
 .lang-bg {
     position: absolute;
-    font-size: 1.5rem;
+    font-size: 1.4rem; /* Larger halo for all-around visibility */
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.25);
-    /* Increased background visibility */
-    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    color: rgba(255, 255, 255, 0.15); 
+    transform: translateY(0); /* Centered with active lang */
     z-index: 1;
     pointer-events: none;
-    letter-spacing: 2px;
-    /* Wider for premium look */
+    letter-spacing: -1px;
 }
 
 .lang-fg {
@@ -632,8 +635,7 @@ h2 {
     font-weight: 900;
     color: var(--accent-blue);
     text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
-    transform: translateY(-9px);
-    /* Deeper stack effect */
+    transform: translateY(0); /* Perfectly centered on top of the ghost text */
     z-index: 2;
     transition: all 0.3s ease;
 }
@@ -829,17 +831,20 @@ h2 {
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 0 16px !important;
+    .glass-nav .container {
+        padding: 0 12px !important; /* Unified 12px edge padding for header */
     }
 
     .nav-content {
-        padding: 0 4px !important;
+        padding: 0 !important;
     }
 
     .logo-img {
-        height: 28px !important;
-        /* Smaller for mobile */
+        height: 28px !important; /* Smaller for mobile */
+    }
+
+    .nav-right {
+        gap: 12px !important; /* Symmetric 12px gap */
     }
 
     .nav-status-container {
