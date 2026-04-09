@@ -35,4 +35,76 @@ document.addEventListener('DOMContentLoaded', () => {
             nav.style.boxShadow = 'none';
         }
     });
+
+    // Динамический статус в шапке (переключение ролей)
+    const statusText = document.getElementById('dynamic-status');
+    const statusContainer = document.querySelector('.nav-status-container');
+    
+    if (statusText) {
+        const lang = document.documentElement.lang || 'ru';
+        const phrases = {
+            ru: [
+                "Ведущий BIM-инженер",
+                "Открыт к проектам",
+                "Эксперт по AI-автоматизации",
+                "Доступен для задач",
+                "Архитектор систем",
+                "Жду предложений"
+            ],
+            en: [
+                "Lead BIM Engineer",
+                "Open for projects",
+                "AI Automation Expert",
+                "Available Now",
+                "System Architect",
+                "Let's collaborate"
+            ]
+        };
+
+        let currentIndex = 0;
+        const currentPhrases = phrases[lang] || phrases.en;
+
+        const updateStatus = () => {
+            statusContainer.style.opacity = '0';
+            
+            setTimeout(() => {
+                statusText.textContent = currentPhrases[currentIndex];
+                statusContainer.style.opacity = '1';
+                
+                // Меняем цвет точки, если это статус (опционально для акцента)
+                const isStatus = currentIndex % 2 !== 0;
+                const dot = statusContainer.querySelector('.status-dot');
+                if (dot) dot.style.background = isStatus ? '#00ff88' : 'var(--accent-blue)';
+                
+                currentIndex = (currentIndex + 1) % currentPhrases.length;
+            }, 400);
+        };
+
+        // Запуск цикла
+        updateStatus();
+        setInterval(updateStatus, 5000);
+        // Mobile Menu Logic (Side Drawer)
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const menuDimmer = document.getElementById('menu-dimmer');
+        const drawerLinks = document.querySelectorAll('.drawer-nav a');
+
+        const toggleMenu = (show) => {
+            mobileDrawer.classList.toggle('active', show);
+            menuDimmer.classList.toggle('active', show);
+            menuToggle.classList.toggle('active', show); // Trigger burger animation
+            document.body.style.overflow = show ? 'hidden' : '';
+        };
+
+        if (menuToggle && mobileDrawer && menuDimmer) {
+            menuToggle.addEventListener('click', () => toggleMenu(true));
+            closeDrawer.addEventListener('click', () => toggleMenu(false));
+            menuDimmer.addEventListener('click', () => toggleMenu(false));
+
+            drawerLinks.forEach(link => {
+                link.addEventListener('click', () => toggleMenu(false));
+            });
+        }
+    }
 });

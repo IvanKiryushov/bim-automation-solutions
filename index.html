@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 
 <body>
@@ -26,34 +28,68 @@
 
     <nav class="glass-nav">
         <div class="container nav-content">
-            <div class="logo">Kiryushov<span class="accent">.BIM</span></div>
-            <div class="nav-links">
-                <a href="#stats">Цифры</a>
-                <a href="#experience">Кейсы</a>
-                <a href="#skills">Стек</a>
+            <div class="nav-left">
+                <a href="#" class="logo">
+                    <img src="logo.png" alt="IK Logo" class="logo-img">
+                </a>
+            </div>
+
+            <!-- Центр: Динамический статус -->
+            <div class="nav-center">
+                <div class="nav-status-container">
+                    <span class="status-dot"></span>
+                    <span class="status-text" id="dynamic-status">BIM SOLUTIONS ENGINEER</span>
+                </div>
             </div>
             <div class="nav-right">
-                <div class="lang-switch-container">
-                    <a href="index.html" class="lang-link active">RU</a>
-                    <span class="lang-sep">|</span>
-                    <a href="en.html" class="lang-link">EN</a>
-                </div>
-                <a href="https://t.me/bimivan" target="_blank" class="btn-outline nav-contact">
-                    <span class="nav-contact-text">Написать в Telegram</span>
-                    <i class="fab fa-telegram-plane nav-contact-icon" style="display: none;"></i>
+                <a href="en.html" class="lang-stack">
+                    <span class="lang-bg">EN</span>
+                    <span class="lang-fg">RU</span>
                 </a>
+                <!-- Бургер-кнопка -->
+                <button class="menu-toggle" id="menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
 
+    <!-- Мобильное меню (Боковая панель) -->
+    <div class="menu-dimmer" id="menu-dimmer"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-header">
+            <button class="close-drawer" id="close-drawer" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="drawer-content">
+            <nav class="drawer-nav">
+                <a href="#stats">Цифры</a>
+                <a href="#experience">Кейсы</a>
+                <a href="#skills">Стек</a>
+            </nav>
+            <div class="drawer-footer">
+                <p>Связаться:</p>
+                <div class="drawer-socials">
+                    <a href="https://t.me/bimivan" target="_blank" class="glass-icon"><i
+                            class="fab fa-telegram-plane"></i></a>
+                    <a href="https://www.linkedin.com/in/ivan-kiryushov-5489a4198/" target="_blank"
+                        class="glass-icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header class="hero">
         <div class="container hero-content fade-up">
-            <div class="hero-tag">Lead BIM Solutions Engineer | AI & Automation</div>
             <h1>Архитектура процессов.<br>Системность. <span class="accent">Автоматизация.</span></h1>
             <p class="subtitle">Трансформирую хаос данных в четко работающие инженерные инструменты. Проектирую
                 BIM-решения, внедряю AI-ассистентов и ускоряю проектирование.</p>
             <div class="hero-actions">
-                <a href="Kiryushov_Ru.pdf" class="btn-primary" download>Скачать PDF резюме <i class="fas fa-file-pdf"></i></a>
+                <a href="Kiryushov_Ru.pdf" class="btn-primary" download>Скачать PDF резюме <i
+                        class="fas fa-file-pdf"></i></a>
                 <a href="#experience" class="btn-secondary">Посмотреть опыт <i class="fas fa-arrow-down"></i></a>
             </div>
         </div>
@@ -79,7 +115,8 @@
             <div class="stat-card glass-card">
                 <div class="stat-number">74</div>
                 <div class="stat-label">Этажа</div>
-                <div class="stat-desc">Полная координация (АР, КР, ИОС) первого технологически сложного небоскреба.</div>
+                <div class="stat-desc">Полная координация (АР, КР, ИОС) первого технологически сложного небоскреба.
+                </div>
             </div>
         </div>
     </section>
@@ -131,7 +168,10 @@
                 </div>
 
                 <details class="timeline-item timeline-details" style="cursor: pointer; margin-top: -10px;">
-                    <summary style="list-style: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">
+                    <summary
+                        style="list-style: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; display: inline-flex; align-items: center; gap: 8px;"
+                        onmouseover="this.style.color='var(--accent-blue)'"
+                        onmouseout="this.style.color='var(--text-muted)'">
                         <span>Показать ранний опыт (2020 - 2021)</span>
                         <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
                     </summary>
@@ -146,8 +186,10 @@
                                 <div class="period">2020 — 2021</div>
                             </div>
                             <ul class="job-details">
-                                <li><strong>Сложное моделирование:</strong> Координация 74-этажной башни (АР, КР, ИОС) в Москва-Сити.</li>
-                                <li><strong>R&D / Team Leading:</strong> Разработка процессов для технологии Scan-to-BIM (облака точек). Управление процессами распределения задач.</li>
+                                <li><strong>Сложное моделирование:</strong> Координация 74-этажной башни (АР, КР, ИОС) в
+                                    Москва-Сити.</li>
+                                <li><strong>R&D / Team Leading:</strong> Разработка процессов для технологии Scan-to-BIM
+                                    (облака точек). Управление процессами распределения задач.</li>
                             </ul>
                         </div>
                     </div>
@@ -207,11 +249,8 @@
                 <a href="https://www.linkedin.com/in/ivan-kiryushov-5489a4198/" target="_blank" class="glass-icon"><i
                         class="fab fa-linkedin-in"></i></a>
             </div>
-            <div class="copyright">© 2026 Иван Кирюшов. Все права защищены.</div>
         </div>
     </footer>
-
-
     <script src="app.js"></script>
 </body>
 
