@@ -31,7 +31,11 @@
                 <a href="#skills">Стек</a>
             </div>
             <div style="display: flex; gap: 16px; align-items: center;">
-                <a href="en.html" class="lang-switch" style="color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.3s;">EN</a>
+                <div class="lang-switch-container">
+                    <a href="index.html" class="lang-link active">RU</a>
+                    <span class="lang-sep">|</span>
+                    <a href="en.html" class="lang-link">EN</a>
+                </div>
                 <a href="https://t.me/bimivan" target="_blank" class="btn-outline nav-contact"><span class="nav-contact-text">Написать в Telegram</span><i class="fab fa-telegram-plane nav-contact-icon" style="display: none;"></i></a>
             </div>
         </div>
@@ -121,12 +125,12 @@
                     </div>
                 </div>
 
-                <details class="timeline-item timeline-details" style="cursor: pointer;">
-                    <summary class="glass-card" style="padding: 16px 32px; list-style: none; font-weight: 600; color: var(--accent-blue); display: flex; justify-content: space-between; align-items: center;">
+                <details class="timeline-item timeline-details" style="cursor: pointer; margin-top: -10px;">
+                    <summary style="list-style: none; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.color='var(--accent-blue)'" onmouseout="this.style.color='var(--text-muted)'">
                         <span>Показать ранний опыт (2020 - 2021)</span>
-                        <i class="fas fa-chevron-down"></i>
+                        <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i>
                     </summary>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 24px;">
                         <div class="timeline-dot" style="top: 24px;"></div>
                         <div class="glass-card timeline-content">
                             <div class="job-header">
