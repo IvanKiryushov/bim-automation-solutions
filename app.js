@@ -44,20 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const lang = document.documentElement.lang || 'ru';
         const phrases = {
             ru: [
-                "Ведущий BIM-инженер",
-                "Открыт к проектам",
-                "Эксперт по AI-автоматизации",
+                "Workflow Automation Architect",
+                "Открыт к проектной работе",
+                "AI & RAG Solutions",
                 "Доступен для задач",
-                "Архитектор систем",
-                "Жду предложений"
+                "Системный архитектор",
+                "Let's automate"
             ],
             en: [
-                "Lead BIM Engineer",
-                "Open for projects",
-                "AI Automation Expert",
+                "Workflow Automation Architect",
+                "Open for project work",
+                "AI & RAG Solutions",
                 "Available Now",
                 "System Architect",
-                "Let's collaborate"
+                "Let's automate"
             ]
         };
 
@@ -105,6 +105,55 @@ document.addEventListener('DOMContentLoaded', () => {
             drawerLinks.forEach(link => {
                 link.addEventListener('click', () => toggleMenu(false));
             });
+
+            // Проверка параметра в URL для сохранения меню открытым (бесшовное переключение языка)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('menu') === 'active') {
+                // Временно отключаем анимацию для эффекта "мгновенного" появления
+                mobileDrawer.style.transition = 'none';
+                menuDimmer.style.transition = 'none';
+                
+                toggleMenu(true);
+
+                // Возвращаем анимацию для последующих действий
+                setTimeout(() => {
+                    mobileDrawer.style.transition = '';
+                    menuDimmer.style.transition = '';
+                    // Очищаем URL от параметра, чтобы при ручном обновлении меню не открывалось само
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 50);
+            }
         }
+        // Логика аккордеонов для секции Services
+        const accordions = document.querySelectorAll('.service-accordion');
+        accordions.forEach(accordion => {
+            const btn = accordion.querySelector('.service-header');
+            const body = accordion.querySelector('.service-body');
+
+            btn.addEventListener('click', () => {
+                const isOpen = accordion.classList.contains('is-open');
+
+                if (isOpen) {
+                    // Закрываем
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    requestAnimationFrame(() => {
+                        body.style.maxHeight = '0';
+                    });
+                    accordion.classList.remove('is-open');
+                    btn.setAttribute('aria-expanded', 'false');
+                } else {
+                    // Открываем
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    accordion.classList.add('is-open');
+                    btn.setAttribute('aria-expanded', 'true');
+                    // После анимации убираем жёсткий px, чтобы контент адаптировался
+                    body.addEventListener('transitionend', () => {
+                        if (accordion.classList.contains('is-open')) {
+                            body.style.maxHeight = 'none';
+                        }
+                    }, { once: true });
+                }
+            });
+        });
     }
 });
