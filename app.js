@@ -61,27 +61,30 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         };
 
-        let currentIndex = 0;
+        let currentIndex = 1; // Start from the second phrase as the first is already in HTML
         const currentPhrases = phrases[lang] || phrases.en;
 
         const updateStatus = () => {
-            statusContainer.style.opacity = '0';
+            // Fade only the text, keeping the badge and dot visible
+            statusText.style.opacity = '0';
             
             setTimeout(() => {
                 statusText.textContent = currentPhrases[currentIndex];
-                statusContainer.style.opacity = '1';
                 
-                // Меняем цвет точки, если это статус (опционально для акцента)
+                // Update dot color based on status type
                 const isStatus = currentIndex % 2 !== 0;
                 const dot = statusContainer.querySelector('.status-dot');
-                if (dot) dot.style.background = isStatus ? '#00ff88' : 'var(--accent-blue)';
+                if (dot) {
+                    dot.style.background = isStatus ? '#00ff88' : 'var(--accent-blue)';
+                    dot.style.boxShadow = isStatus ? '0 0 10px #00ff88' : '0 0 10px var(--accent-blue)';
+                }
                 
+                statusText.style.opacity = '1';
                 currentIndex = (currentIndex + 1) % currentPhrases.length;
-            }, 400);
+            }, 400); // Matches CSS transition duration
         };
 
-        // Запуск цикла
-        updateStatus();
+        // Start interval without an immediate call to avoid initial flicker
         setInterval(updateStatus, 5000);
         // Mobile Menu Logic (Side Drawer)
         const menuToggle = document.getElementById('menu-toggle');
@@ -124,36 +127,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 50);
             }
         }
-        // Логика аккордеонов для секции Services
-        const accordions = document.querySelectorAll('.service-accordion');
-        accordions.forEach(accordion => {
-            const btn = accordion.querySelector('.service-header');
-            const body = accordion.querySelector('.service-body');
+        // Универсальная логика аккордеонов (Services, Experience и т.д.)
+        const initAccordion = (containerSelector, headerSelector, bodySelector) => {
+            const accordions = document.querySelectorAll(containerSelector);
+            accordions.forEach(accordion => {
+                const header = accordion.querySelector(headerSelector);
+                const body = accordion.querySelector(bodySelector);
 
-            btn.addEventListener('click', () => {
-                const isOpen = accordion.classList.contains('is-open');
+                if (!header || !body) return;
 
-                if (isOpen) {
-                    // Закрываем
-                    body.style.maxHeight = body.scrollHeight + 'px';
-                    requestAnimationFrame(() => {
-                        body.style.maxHeight = '0';
-                    });
-                    accordion.classList.remove('is-open');
-                    btn.setAttribute('aria-expanded', 'false');
-                } else {
-                    // Открываем
-                    body.style.maxHeight = body.scrollHeight + 'px';
-                    accordion.classList.add('is-open');
-                    btn.setAttribute('aria-expanded', 'true');
-                    // После анимации убираем жёсткий px, чтобы контент адаптировался
-                    body.addEventListener('transitionend', () => {
-                        if (accordion.classList.contains('is-open')) {
-                            body.style.maxHeight = 'none';
-                        }
-                    }, { once: true });
-                }
+                header.addEventListener('click', () => {
+                    const isOpen = accordion.classList.contains('is-open');
+
+                    if (isOpen) {
+                        // Закрываем
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                        requestAnimationFrame(() => {
+                            body.style.maxHeight = '0';
+                        });
+                        accordion.classList.remove('is-open');
+                        header.setAttribute('aria-expanded', 'false');
+                    } else {
+                        // Открываем
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                        accordion.classList.add('is-open');
+                        header.setAttribute('aria-expanded', 'true');
+                        // После анимации убираем жёсткий px, чтобы контент адаптировался (например, при ресайзе)
+                        body.addEventListener('transitionend', () => {
+                            if (accordion.classList.contains('is-open')) {
+                                body.style.maxHeight = 'none';
+                            }
+                        }, { once: true });
+                    }
+                });
             });
-        });
+        };
+
+        // Инициализируем аккордеоны для разных секций
+        initAccordion('.service-accordion', '.service-header', '.service-body');
+        initAccordion('.exp-accordion', '.exp-header', '.exp-body');
     }
 });
+

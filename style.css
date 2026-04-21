@@ -18,6 +18,10 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 100px;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -25,22 +29,34 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-main);
     line-height: 1.6;
-    overflow-x: hidden;
     position: relative;
     margin: 0;
+    padding: 0;
 }
 
 .noise-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 9999;
     opacity: 0.02;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.45' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-size: 150px 150px;
+}
+
+.blob-wrapper {
+    position: fixed; /* Pin to viewport to prevent vertical leakage */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    clip-path: inset(0 0 0 0); /* Force clip to browser window */
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Background animated blobs for Premium Glassmorphism */
@@ -72,7 +88,7 @@ body {
 }
 
 .blob-3 {
-    bottom: -10%;
+    top: 90%;
     left: 10%;
     width: 650px;
     height: 650px;
@@ -184,14 +200,29 @@ h2 {
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 32px;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* Fixed: Added for pseudo-element stability */
 }
+
+/* Fix for hover jitter: invisible hit-area extension */
+.glass-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -30px; /* Increased buffer for translateY(-5px) upward movement */
+    pointer-events: auto;
+    z-index: -1; /* Reset: Keep it behind children to avoid blocking clicks */
+}
+
 
 .glass-card:hover {
     transform: translateY(-5px);
     border-color: rgba(0, 210, 255, 0.3);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
+
 
 /* Nav */
 .glass-nav {
@@ -277,11 +308,10 @@ h2 {
 .hero {
     display: flex;
     align-items: center;
-    min-height: 100vh;
-    padding-top: 160px;
-    /* Compensation for removed hero-tag */
-    padding-bottom: 60px;
+    padding-top: 130px;
+    padding-bottom: 40px;
     position: relative;
+    min-height: auto;
 }
 
 .subtitle {
@@ -306,7 +336,8 @@ h2 {
 
 @media (max-width: 900px) {
     .hero {
-        padding-top: 120px;
+        padding-top: 80px; /* Уменьшаем отступ сверху на мобилке */
+        min-height: auto;
     }
     
     .hero-content {
@@ -374,7 +405,7 @@ h2 {
 
 /* Experience */
 .section-pad {
-    padding: 100px 0;
+    padding: 60px 0;
 }
 
 .timeline {
@@ -496,6 +527,19 @@ h2 {
     .container {
         padding: 0 20px; /* Уменьшаем боковые отступы всей страницы на мобилках */
     }
+
+    .nav-right {
+        gap: 15px; /* Убираем огромный отступ между языком и меню на мобилках */
+    }
+
+    .section-pad {
+        padding: 30px 0; /* Минимальные отступы на мобилке */
+    }
+
+    .footer {
+        padding: 10px 0 5px; /* Экстремально компактный подвал */
+        margin-top: 0;
+    }
 }
 
 /* Services */
@@ -509,7 +553,7 @@ h2 {
 
 .service-accordion {
     padding: 0;
-    overflow: hidden;
+    /* Removed overflow: hidden to allow jitter stabilizer to work */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -568,9 +612,59 @@ h2 {
 .service-body {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.45s cubic-bezier(0.19, 1, 0.22, 1), padding 0.3s ease;
+    transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
     padding: 0 28px;
 }
+
+/* Experience Accordion (Custom) */
+.exp-accordion {
+    margin-top: 10px; /* Aligned with timeline */
+}
+
+.exp-header {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 10px 0 10px 60px; /* Matched to timeline padding */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+}
+
+.exp-header:hover {
+    color: var(--accent-blue);
+}
+
+.exp-chevron {
+    font-size: 0.8rem;
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), color 0.3s ease;
+}
+
+.exp-accordion.is-open .exp-header {
+    color: var(--accent-blue);
+}
+
+.exp-accordion.is-open .exp-chevron {
+    transform: rotate(180deg);
+}
+
+.exp-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-content {
+    padding-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
 
 .service-body p {
     color: var(--text-muted);
@@ -639,20 +733,20 @@ h2 {
 /* Footer */
 .footer {
     border-top: 1px solid var(--glass-border);
-    padding: 80px 0 40px;
-    margin-top: 50px;
+    padding: 10px 0;
+    margin-top: 0px;
     text-align: center;
 }
 
 .footer-cta h2 {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .social-links {
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin: 32px 0;
+    margin: 10px 0;
 }
 
 .glass-icon {
@@ -772,6 +866,7 @@ h2 {
     line-height: normal;
     display: flex;
     align-items: center;
+    transition: opacity 0.4s ease-in-out; /* Smooth fade for dynamic updates */
 }
 
 @keyframes statusPulse {
@@ -1112,6 +1207,7 @@ h2 {
     .hero {
         padding-top: 40px !important;
         min-height: auto !important;
+        height: auto !important;
     }
 
     .section-pad {
